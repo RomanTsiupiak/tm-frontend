@@ -1,0 +1,17 @@
+.input {
+  padding: 4px 12px;
+  border: 1px solid var(--color-primary-100);
+  border-radius: 8px;
+  width: 100%;
+  user-select: none;
+  outline: none;
+  color: var(--color-secondary-500);
+}
+
+.error {
+  border: 1px solid var(--color-error-400);
+}
+
+.input:focus:not(.error) {
+  border: 1px solid var(--color-primary-800);
+}
