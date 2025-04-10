@@ -4,8 +4,8 @@ import {
 } from '@tanstack/react-router';
 
 import { routeTree } from '@/routeTree.gen';
-
-import { useAuth } from './AuthProvider';
+import { useAuth } from '@/hooks/useAuth';
+import { UiLoader } from '@/components';
 
 const router = createRouter({ routeTree, context: { user: null } });
 
@@ -16,7 +16,9 @@ declare module '@tanstack/react-router' {
 }
 
 export const RouterProvider = () => {
-  const user = useAuth();
+  const { user, isLoading } = useAuth();
 
-  return <TanstackRouter router={router} context={{ user: user ?? null }} />;
+  if (isLoading) return <UiLoader fullscreen />;
+
+  return <TanstackRouter router={router} context={{ user }} />;
 };
