@@ -1,19 +1,11 @@
-import { z } from 'zod';
-
-import { ButtonBase, FieldBase } from '@/components';
-import { useForm } from '@/hooks/useForm';
-
-import { useSignIn } from './useSignIn';
-import { UiError } from '@/components/UiError';
 import { zodResolver } from '@hookform/resolvers/zod';
+
+import { ButtonBase, FieldBase, UiError } from '@/components';
+import { useForm } from '@/hooks/useForm';
 import { authService } from '@/services/authService';
 
-const schema = z.object({
-  email: z.string(),
-  password: z.string(),
-});
-
-type SignInType = z.infer<typeof schema>;
+import { useSignIn } from './useSignIn';
+import { SignInType, SignInSchema } from './signIn.schema';
 
 export const SignIn = () => {
   const { signIn, isPending, apiError } = useSignIn();
@@ -31,7 +23,7 @@ export const SignIn = () => {
     formState: { errors },
   } = useForm({
     onSubmit,
-    resolver: zodResolver(schema),
+    resolver: zodResolver(SignInSchema),
     defaultValues: { email: '', password: '' },
   });
 

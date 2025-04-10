@@ -1,7 +1,7 @@
 import { Tabs } from '@/components';
 
 import { SignIn } from './signIn/SignInForm';
-import { SignUp } from './SignUpForm';
+import { SignUp } from './signUp/SignUpForm';
 
 export const Auth = () => {
   return (
