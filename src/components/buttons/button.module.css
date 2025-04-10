@@ -2,6 +2,7 @@
   border-radius: 8px;
   background-color: var(--color-primary-500);
   font-size: 14px;
+  height: 40px;
   font-weight: 500;
   cursor: pointer;
 }
@@ -19,4 +20,8 @@
     opacity: 0.7;
     cursor: default;
   }
+}
+
+.loading {
+  width: 4px;
 }

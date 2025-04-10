@@ -1,12 +1,13 @@
 import { ComponentProps, useCallback } from 'react';
 import {
   FieldValues,
+  SubmitHandler,
   useForm as useHookForm,
   UseFormProps as UseHookFormProps,
 } from 'react-hook-form';
 
 type UseFormProps<T extends FieldValues> = {
-  onSubmit: () => void;
+  onSubmit: SubmitHandler<T>;
 } & UseHookFormProps<T>;
 
 export const useForm = <T extends FieldValues>({

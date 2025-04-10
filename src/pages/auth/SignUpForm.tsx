@@ -52,7 +52,7 @@ export const SignUp = () => {
         />
 
         <div className="flex justify-end mt-2">
-          <ButtonBase type="submit" title="Sign up" />
+          <ButtonBase type="submit">Sign Up</ButtonBase>
         </div>
       </Form>
     </div>

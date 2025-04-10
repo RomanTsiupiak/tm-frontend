@@ -3,25 +3,30 @@ import clsx from 'clsx';
 
 import classes from './button.module.css';
 
+import { UiLoader } from '../UiLoader/UiLoader';
+
 type ButtonBaseProps = {
   variant?: 'primary';
-  title: string;
+  loading?: boolean;
 } & ComponentProps<'button'>;
 
 export const ButtonBase = ({
-  variant = 'primary',
-  title,
-  type = 'button',
+  children,
+  disabled,
+  loading,
   className,
+  variant = 'primary',
+  type = 'button',
   ...rest
 }: ButtonBaseProps) => {
   return (
     <button
       type={type}
+      disabled={loading || disabled}
       className={clsx(classes.button, classes[variant], className)}
       {...rest}
     >
-      {title}
+      {loading ? <UiLoader /> : children}
     </button>
   );
 };
