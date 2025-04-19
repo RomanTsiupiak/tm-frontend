@@ -8,14 +8,30 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthImport } from './routes/auth'
 import { Route as IndexImport } from './routes/index'
-import { Route as DashboardIndexImport } from './routes/dashboard/index'
+import { Route as dashboardDashboardImport } from './routes/(dashboard)/_dashboard'
+import { Route as dashboardDashboardTaskImport } from './routes/(dashboard)/_dashboard.task'
+import { Route as dashboardDashboardSettingsImport } from './routes/(dashboard)/_dashboard.settings'
+import { Route as dashboardDashboardOverviewImport } from './routes/(dashboard)/_dashboard.overview'
+import { Route as dashboardDashboardMessageImport } from './routes/(dashboard)/_dashboard.message'
+import { Route as dashboardDashboardMentorsImport } from './routes/(dashboard)/_dashboard.mentors'
+
+// Create Virtual Routes
+
+const dashboardImport = createFileRoute('/(dashboard)')()
 
 // Create/Update Routes
+
+const dashboardRoute = dashboardImport.update({
+  id: '/(dashboard)',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AuthRoute = AuthImport.update({
   id: '/auth',
@@ -29,10 +45,43 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DashboardIndexRoute = DashboardIndexImport.update({
-  id: '/dashboard/',
-  path: '/dashboard/',
-  getParentRoute: () => rootRoute,
+const dashboardDashboardRoute = dashboardDashboardImport.update({
+  id: '/_dashboard',
+  getParentRoute: () => dashboardRoute,
+} as any)
+
+const dashboardDashboardTaskRoute = dashboardDashboardTaskImport.update({
+  id: '/task',
+  path: '/task',
+  getParentRoute: () => dashboardDashboardRoute,
+} as any)
+
+const dashboardDashboardSettingsRoute = dashboardDashboardSettingsImport.update(
+  {
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => dashboardDashboardRoute,
+  } as any,
+)
+
+const dashboardDashboardOverviewRoute = dashboardDashboardOverviewImport.update(
+  {
+    id: '/overview',
+    path: '/overview',
+    getParentRoute: () => dashboardDashboardRoute,
+  } as any,
+)
+
+const dashboardDashboardMessageRoute = dashboardDashboardMessageImport.update({
+  id: '/message',
+  path: '/message',
+  getParentRoute: () => dashboardDashboardRoute,
+} as any)
+
+const dashboardDashboardMentorsRoute = dashboardDashboardMentorsImport.update({
+  id: '/mentors',
+  path: '/mentors',
+  getParentRoute: () => dashboardDashboardRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -53,56 +102,167 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
-    '/dashboard/': {
-      id: '/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardIndexImport
+    '/(dashboard)': {
+      id: '/(dashboard)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof dashboardImport
       parentRoute: typeof rootRoute
+    }
+    '/(dashboard)/_dashboard': {
+      id: '/(dashboard)/_dashboard'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof dashboardDashboardImport
+      parentRoute: typeof dashboardRoute
+    }
+    '/(dashboard)/_dashboard/mentors': {
+      id: '/(dashboard)/_dashboard/mentors'
+      path: '/mentors'
+      fullPath: '/mentors'
+      preLoaderRoute: typeof dashboardDashboardMentorsImport
+      parentRoute: typeof dashboardDashboardImport
+    }
+    '/(dashboard)/_dashboard/message': {
+      id: '/(dashboard)/_dashboard/message'
+      path: '/message'
+      fullPath: '/message'
+      preLoaderRoute: typeof dashboardDashboardMessageImport
+      parentRoute: typeof dashboardDashboardImport
+    }
+    '/(dashboard)/_dashboard/overview': {
+      id: '/(dashboard)/_dashboard/overview'
+      path: '/overview'
+      fullPath: '/overview'
+      preLoaderRoute: typeof dashboardDashboardOverviewImport
+      parentRoute: typeof dashboardDashboardImport
+    }
+    '/(dashboard)/_dashboard/settings': {
+      id: '/(dashboard)/_dashboard/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof dashboardDashboardSettingsImport
+      parentRoute: typeof dashboardDashboardImport
+    }
+    '/(dashboard)/_dashboard/task': {
+      id: '/(dashboard)/_dashboard/task'
+      path: '/task'
+      fullPath: '/task'
+      preLoaderRoute: typeof dashboardDashboardTaskImport
+      parentRoute: typeof dashboardDashboardImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface dashboardDashboardRouteChildren {
+  dashboardDashboardMentorsRoute: typeof dashboardDashboardMentorsRoute
+  dashboardDashboardMessageRoute: typeof dashboardDashboardMessageRoute
+  dashboardDashboardOverviewRoute: typeof dashboardDashboardOverviewRoute
+  dashboardDashboardSettingsRoute: typeof dashboardDashboardSettingsRoute
+  dashboardDashboardTaskRoute: typeof dashboardDashboardTaskRoute
+}
+
+const dashboardDashboardRouteChildren: dashboardDashboardRouteChildren = {
+  dashboardDashboardMentorsRoute: dashboardDashboardMentorsRoute,
+  dashboardDashboardMessageRoute: dashboardDashboardMessageRoute,
+  dashboardDashboardOverviewRoute: dashboardDashboardOverviewRoute,
+  dashboardDashboardSettingsRoute: dashboardDashboardSettingsRoute,
+  dashboardDashboardTaskRoute: dashboardDashboardTaskRoute,
+}
+
+const dashboardDashboardRouteWithChildren =
+  dashboardDashboardRoute._addFileChildren(dashboardDashboardRouteChildren)
+
+interface dashboardRouteChildren {
+  dashboardDashboardRoute: typeof dashboardDashboardRouteWithChildren
+}
+
+const dashboardRouteChildren: dashboardRouteChildren = {
+  dashboardDashboardRoute: dashboardDashboardRouteWithChildren,
+}
+
+const dashboardRouteWithChildren = dashboardRoute._addFileChildren(
+  dashboardRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof dashboardDashboardRouteWithChildren
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardIndexRoute
+  '/mentors': typeof dashboardDashboardMentorsRoute
+  '/message': typeof dashboardDashboardMessageRoute
+  '/overview': typeof dashboardDashboardOverviewRoute
+  '/settings': typeof dashboardDashboardSettingsRoute
+  '/task': typeof dashboardDashboardTaskRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof dashboardDashboardRouteWithChildren
   '/auth': typeof AuthRoute
-  '/dashboard': typeof DashboardIndexRoute
+  '/mentors': typeof dashboardDashboardMentorsRoute
+  '/message': typeof dashboardDashboardMessageRoute
+  '/overview': typeof dashboardDashboardOverviewRoute
+  '/settings': typeof dashboardDashboardSettingsRoute
+  '/task': typeof dashboardDashboardTaskRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/dashboard/': typeof DashboardIndexRoute
+  '/(dashboard)': typeof dashboardRouteWithChildren
+  '/(dashboard)/_dashboard': typeof dashboardDashboardRouteWithChildren
+  '/(dashboard)/_dashboard/mentors': typeof dashboardDashboardMentorsRoute
+  '/(dashboard)/_dashboard/message': typeof dashboardDashboardMessageRoute
+  '/(dashboard)/_dashboard/overview': typeof dashboardDashboardOverviewRoute
+  '/(dashboard)/_dashboard/settings': typeof dashboardDashboardSettingsRoute
+  '/(dashboard)/_dashboard/task': typeof dashboardDashboardTaskRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/mentors'
+    | '/message'
+    | '/overview'
+    | '/settings'
+    | '/task'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard'
-  id: '__root__' | '/' | '/auth' | '/dashboard/'
+  to:
+    | '/'
+    | '/auth'
+    | '/mentors'
+    | '/message'
+    | '/overview'
+    | '/settings'
+    | '/task'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/(dashboard)'
+    | '/(dashboard)/_dashboard'
+    | '/(dashboard)/_dashboard/mentors'
+    | '/(dashboard)/_dashboard/message'
+    | '/(dashboard)/_dashboard/overview'
+    | '/(dashboard)/_dashboard/settings'
+    | '/(dashboard)/_dashboard/task'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
-  DashboardIndexRoute: typeof DashboardIndexRoute
+  dashboardRoute: typeof dashboardRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
-  DashboardIndexRoute: DashboardIndexRoute,
+  dashboardRoute: dashboardRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -117,7 +277,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/auth",
-        "/dashboard/"
+        "/(dashboard)"
       ]
     },
     "/": {
@@ -126,8 +286,42 @@ export const routeTree = rootRoute
     "/auth": {
       "filePath": "auth.tsx"
     },
-    "/dashboard/": {
-      "filePath": "dashboard/index.tsx"
+    "/(dashboard)": {
+      "filePath": "(dashboard)",
+      "children": [
+        "/(dashboard)/_dashboard"
+      ]
+    },
+    "/(dashboard)/_dashboard": {
+      "filePath": "(dashboard)/_dashboard.tsx",
+      "parent": "/(dashboard)",
+      "children": [
+        "/(dashboard)/_dashboard/mentors",
+        "/(dashboard)/_dashboard/message",
+        "/(dashboard)/_dashboard/overview",
+        "/(dashboard)/_dashboard/settings",
+        "/(dashboard)/_dashboard/task"
+      ]
+    },
+    "/(dashboard)/_dashboard/mentors": {
+      "filePath": "(dashboard)/_dashboard.mentors.tsx",
+      "parent": "/(dashboard)/_dashboard"
+    },
+    "/(dashboard)/_dashboard/message": {
+      "filePath": "(dashboard)/_dashboard.message.tsx",
+      "parent": "/(dashboard)/_dashboard"
+    },
+    "/(dashboard)/_dashboard/overview": {
+      "filePath": "(dashboard)/_dashboard.overview.tsx",
+      "parent": "/(dashboard)/_dashboard"
+    },
+    "/(dashboard)/_dashboard/settings": {
+      "filePath": "(dashboard)/_dashboard.settings.tsx",
+      "parent": "/(dashboard)/_dashboard"
+    },
+    "/(dashboard)/_dashboard/task": {
+      "filePath": "(dashboard)/_dashboard.task.tsx",
+      "parent": "/(dashboard)/_dashboard"
     }
   }
 }
